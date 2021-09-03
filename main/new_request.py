@@ -13,7 +13,6 @@ def new_request_row():
 
 def get_agency():
     """ Get the name of the agency for the relevant request and save it """
-    # TODO: confirm the agency
     agency = str(input("To which agency did you make your request? \n"))
     #confirm_agency = str(input("You entered %s, enter space to confirm or any other key to start over " % agency))
     #while confirm_agency != ' ':
@@ -80,5 +79,5 @@ def get_tracking_num():
         print("Enter y or n")
         get_tracking_num()
     if answer == 'y':
-        tracking_num = str(input("Enter tracking number, i.e. P50728 \n"))
+        tracking_num = str(input("Enter tracking number, i.e. P50728\n"))
         return tracking_num
