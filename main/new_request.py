@@ -1,14 +1,30 @@
+# def new_request_row():
+#     """ Get all user input necessary for a new request, make a dictionary of that user input, and append a new row to tracking spreadsheet """
+#     new_request_dict = {
+#         'agency': get_agency(),
+#         'date_requested': get_date_requested(),
+#         'tracking_num': get_tracking_num(),
+#         'followup_interval': get_followup_interval(),
+#         'required_response_time': get_required_response_time(),
+#         'request_description': get_request_subject()
+#     }
+#     return new_request_dict
+
+
 def new_request_row():
-    """ Get all user input necessary for a new request, make a dictionary of that user input, and append a new row to tracking spreadsheet """
-    new_request_dict = {
-        'agency': get_agency(),
-        'date_requested': get_date_requested(),
-        'tracking_num': get_tracking_num(),
-        'followup_interval': get_followup_interval(),
-        'required_response_time': get_required_response_time(),
-        'request_description': get_request_subject()
-    }
-    return new_request_dict
+    request_title = get_request_title()
+    agency = get_agency()
+    date_requested = get_date_requested(),
+    tracking_num = get_tracking_num(),
+    followup_interval = get_followup_interval(),
+    required_response_time = get_required_response_time(),
+    request_description = get_request_subject()
+    return (request_title, agency, date_requested, tracking_num, followup_interval, required_response_time, request_description)
+
+
+def get_request_title():
+    """ Get the name of the agency for the relevant request and save it """
+    return str(input("Enter a title for the request:\n"))
 
 
 def get_agency():
