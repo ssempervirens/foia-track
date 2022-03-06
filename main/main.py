@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import datetime as datetime
-import pandas as pd
 import pathlib
 import os
 from os import path
@@ -16,34 +15,20 @@ tracker_sheet_file = pathlib.Path("tracker-sheet/foia_track_sheet.csv")
 initial_column_names = ['agency', 'date_requested', 'tracking_num', 'request_subject', 'followup_interval', 'required_response_time']
 # might want to add custom columns like contact at agency, state of agency like CA, OR, etc]
 
-def setup():
-    # if tracker-sheet directory is empty, makes new dataframe to use
-    # TODO: if directory contains any kind of existing csv or excel, read that in - let people using existing foia sheets
-    if not tracker_sheet_file.exists():
-    #if not str(path.isfile('../tracker-sheet/foia_track_sheet.csv')):
-        print("It looks like you don't have a tracker spreadsheet yet. Setting up...")
-        # make the directory where we will write out as a csv
-        os.mkdir('tracker-sheet/')
-        tracker = pd.DataFrame(columns = initial_column_names)
-    if tracker_sheet_file.exists():
-        print("It looks like you aready have a tracker spreadsheet. Reading it in...")
-        tracker = pd.read_csv('tracker-sheet/foia_track_sheet.csv')
-    return tracker
-
-
-def determine_track(tracker):
+def determine_track(cursor):
     """ Determine whether to create a new request or track existing requests """
     action = str(input("What would you like to do?\nEnter 1 to get today's requests to follow up on\n Enter 2 to add a new request\n"))
-    if action == 1:
-        track_requests(tracker)
-    if action == 2:
+    if action == '1':
+        track_requests(cursor)
+    if action == '2':
+        print('true')
         print("Entering add new request mode... \n")
         new_row = new_request_row()
-        tracker = tracker.append(new_row, ignore_index=True)
-        print(tracker)
-        tracker.to_csv('tracker-sheet/foia_track_sheet.csv', index=False)
+        cursor.execute("insert into requests (requesttitle, agency, date_requested, tracking_num, followup_interval, required_response_time, request_description) values (?, ?, ?, ?, ?, ?, ?)", new_row)
 
 
 if __name__ == '__main__':
-    tracker = setup()
-    determine_track(tracker)
+    connection = sqlite3.connect("foiatrack.db")
+    cursor = connection.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS requests (requesttitle TEXT, agency TEXT, date_requested TEXT, tracking_num TEXT, followup_interval INTEGER, required_response_time INTEGER, request_description TEXT)")
+    determine_track(cursor)
