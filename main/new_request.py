@@ -1,16 +1,3 @@
-# def new_request_row():
-#     """ Get all user input necessary for a new request, make a dictionary of that user input, and append a new row to tracking spreadsheet """
-#     new_request_dict = {
-#         'agency': get_agency(),
-#         'date_requested': get_date_requested(),
-#         'tracking_num': get_tracking_num(),
-#         'followup_interval': get_followup_interval(),
-#         'required_response_time': get_required_response_time(),
-#         'request_description': get_request_subject()
-#     }
-#     return new_request_dict
-
-
 def new_request_row():
     request_title = get_request_title()
     agency = get_agency()
@@ -19,7 +6,8 @@ def new_request_row():
     followup_interval = get_followup_interval(),
     required_response_time = get_required_response_time(),
     request_description = get_request_subject()
-    return (request_title, agency, date_requested, tracking_num, followup_interval, required_response_time, request_description)
+    days_to_followup = get_days_to_followup(followup_interval)
+    return (request_title, agency, date_requested, tracking_num, followup_interval, required_response_time, days_to_followup, request_description)
 
 
 def get_request_title():
@@ -30,10 +18,6 @@ def get_request_title():
 def get_agency():
     """ Get the name of the agency for the relevant request and save it """
     agency = str(input("To which agency did you make your request? \n"))
-    #confirm_agency = str(input("You entered %s, enter space to confirm or any other key to start over " % agency))
-    #while confirm_agency != ' ':
-    #    get_agency()
-    #print("Confirmed: " + agency)
     return agency
 
 
@@ -97,3 +81,8 @@ def get_tracking_num():
     if answer == 'y':
         tracking_num = str(input("Enter tracking number, i.e. P50728\n"))
         return tracking_num
+
+
+def get_days_to_followup(followup_interval):
+    """ Set days to follow up as the follow up interval when making a new request """
+    return followup_interval
